@@ -1,0 +1,39 @@
+AlignParameters:
+  Enabled: false
+ClassLength:
+  CountComments: false
+  Max: 200
+Documentation:
+  Enabled: false
+Metrics/LineLength:
+  Max: 100
+MethodLength:
+  CountComments: false
+  Max: 15
+AllCops:
+  TargetRubyVersion: 2.4
+  Exclude:
+    - 'bin/*'
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'Gemfile'
+    - 'Guardfile'
+    - 'Rakefile'
+
+Style/ClassAndModuleChildren:
+  EnforcedStyle: compact
+Style/IndentArray:
+  EnforcedStyle: consistent
+Style/MultilineOperationIndentation:
+  EnforcedStyle: indented
+  SupportedStyles:
+    - aligned
+    - indented
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+Style/DotPosition:
+  EnforcedStyle: leading
+  Enabled: true
+Style/FrozenStringLiteralComment:
+  Enabled: false
