@@ -14,6 +14,7 @@ class Login < Grape::API
       if user.present? && user.valid_password?(params[:password])
         token = user.authentication_tokens.valid.first || AuthenticationToken.generate(user)
         status 200
+        present token.user, with: Entities::UserWithTokenEntity
       else
         error_msg = 'Bad Authentication Parameters'
         error!({ 'error_msg' => error_msg }, 401)
