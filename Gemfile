@@ -8,6 +8,7 @@ end
 gem 'devise'
 gem 'grape'
 gem 'grape-entity'
+gem 'rack-cors'
 gem 'rails', '~> 5.1.4'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.7'
