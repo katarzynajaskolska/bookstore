@@ -5,6 +5,8 @@ class Books < Grape::API
 
   desc 'Endpoints for books'
   resource :books do
+    before { authenticate! }
+
     desc 'Retrieve all books'
     get do
       status 200
