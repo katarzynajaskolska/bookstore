@@ -5,4 +5,5 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   has_many :authentication_tokens
   has_many :books
+  has_many :rates
 end
