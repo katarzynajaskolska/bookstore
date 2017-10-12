@@ -18,18 +18,19 @@ class Rates < Grape::API
 
     desc 'Update book rate'
     params do
+      requires :book_id, type: Integer, desc: 'Book id'
       requires :value, type: Integer, desc: 'Rate value from 1 to 5'
     end
-    put ':id' do
-      current_user.rates.find(params[:id]).update(value: params[:value])
+    put do
+      current_user.rates.find_by(book_id: params[:book_id]).update(value: params[:value])
     end
 
     desc 'Delete book rate'
     params do
-      requires :id, type: Integer, desc: 'Rate id'
+      requires :book_id, type: Integer, desc: 'Book id'
     end
-    delete ':id' do
-      current_user.rates.find(params[:id]).destroy
+    delete do
+      current_user.rates.find_by(book_id: params[:book_id]).destroy
     end
   end
 end

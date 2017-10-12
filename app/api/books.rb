@@ -10,7 +10,7 @@ class Books < Grape::API
     desc 'Retrieve all books'
     get do
       status 200
-      present Book.all.includes(:author), with: Entities::BooksEntity
+      present Book.includes(:author, :rates), with: Entities::BooksEntity, user_id: current_user.id
     end
 
     desc 'Retrieve single book'
