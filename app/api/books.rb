@@ -7,15 +7,13 @@ class Books < Grape::API
   resource :books do
     before { authenticate! }
 
-    desc 'Retrieve last three books rated by user'
+    desc 'Retrieve all books without newest three'
     get do
-      books = Book.includes(:author)
-                  .joins(:rates)
-                  .where('rates.user_id = ?', current_user.id)
-                  .order('rates.updated_at DESC')
-                  .limit(3)
+      books = Book.includes(:author, :rates)
+                  .order('updated_at DESC')
+                  .offset(3)
       status 200
-      present books, with: Entities::BooksEntity
+      present books, with: Entities::BooksEntity, user_id: current_user.id
     end
 
     desc 'Retrieve single book'
@@ -24,6 +22,19 @@ class Books < Grape::API
     end
     get ':id' do
       present Book.find(params[:id]), with: Entities::BookEntity
+    end
+  end
+
+  resource :newest_books do
+    before { authenticate! }
+
+    desc 'Retrieve three last added books'
+    get do
+      books = Book.includes(:author, :rates)
+                  .order('updated_at DESC')
+                  .limit(3)
+      status 200
+      present books, with: Entities::BooksEntity, user_id: current_user.id
     end
   end
 
