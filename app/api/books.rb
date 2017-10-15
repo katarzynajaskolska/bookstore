@@ -7,10 +7,15 @@ class Books < Grape::API
   resource :books do
     before { authenticate! }
 
-    desc 'Retrieve all books'
+    desc 'Retrieve last three books rated by user'
     get do
+      books = Book.includes(:author)
+                  .joins(:rates)
+                  .where('rates.user_id = ?', current_user.id)
+                  .order('rates.updated_at DESC')
+                  .limit(3)
       status 200
-      present Book.includes(:author, :rates), with: Entities::BooksEntity, user_id: current_user.id
+      present books, with: Entities::BooksEntity
     end
 
     desc 'Retrieve single book'

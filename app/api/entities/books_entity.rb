@@ -7,7 +7,7 @@ module Entities
     end
 
     def user_rate
-      object.rates.find_by(user_id: options[:user_id])&.value
+      object.rates.first.value
     end
   end
 end
