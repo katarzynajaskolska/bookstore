@@ -9,9 +9,14 @@ class Books < Grape::API
 
     desc 'Retrieve all books without newest three'
     get do
+      newest_books_ids = Book.order('created_at DESC')
+                             .limit(3)
+                             .pluck(:id)
+      keyword = params[:query].downcase
       books = Book.includes(:author, :rates)
-                  .order('updated_at DESC')
-                  .offset(3)
+                  .joins(:author)
+                  .where('lower(books.title) LIKE ? OR lower(authors.first_name) LIKE ? OR lower(authors.last_name) LIKE ?', "%#{keyword}%", "%#{keyword}%", "%#{keyword}%")
+                  .where('books.id NOT IN (?)', newest_books_ids)
       status 200
       present books, with: Entities::BooksEntity, user_id: current_user.id
     end
@@ -31,7 +36,7 @@ class Books < Grape::API
     desc 'Retrieve three last added books'
     get do
       books = Book.includes(:author, :rates)
-                  .order('updated_at DESC')
+                  .order('created_at DESC')
                   .limit(3)
       status 200
       present books, with: Entities::BooksEntity, user_id: current_user.id
